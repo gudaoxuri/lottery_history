@@ -18,12 +18,10 @@ jobs:
         with:
           node-version: '16'  # Specify the Node.js version
 
-      - name: Install pnpm
-        run: |
-          wget -qO- https://get.pnpm.io/install.sh | sh -
-          export PNPM_HOME="$HOME/.local/share/pnpm"
-          export PATH="$PNPM_HOME:$PATH"
-          source ~/.bashrc
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install dependencies
         run: pnpm install
