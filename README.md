@@ -1,75 +1,100 @@
-# Lottery Data Fetcher
+# 双色球历史数据收集器 (Lottery History)
 
-This project is a lottery data fetching application that extracts lottery draw data from [500.com](https://datachart.500.com/ssq/history/newinc/history.php), saves it to a `ssq.csv` file, merges existing records to avoid duplicates, checks for errors, and corrects them. It is built using TypeScript and utilizes various libraries for HTTP requests and CSV handling.
+[![Daily Update](https://github.com/gudaoxuri/lottery_history/actions/workflows/daily-update.yml/badge.svg)](https://github.com/gudaoxuri/lottery_history/actions/workflows/daily-update.yml)
 
-## Table of Contents
+_NOTE: 本项目主体代码由AI生成，人工修正及复核。_
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [GitHub Actions](#github-actions)
-- [Contributing](#contributing)
-- [License](#license)
+这个项目用于自动抓取和维护中国福利彩票双色球的历史开奖数据。数据每天自动更新，保持最新状态。
 
-## Installation
+## 项目特点
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/lottery-data-fetcher.git
-   cd lottery-data-fetcher
-   ```
+- 自动从官方网站抓取双色球开奖数据
+- 智能合并新旧数据，避免重复记录
+- 支持按期号排序
+- 数据以JSON格式存储，方便其他应用程序使用
+- 使用GitHub Actions实现自动每日更新
 
-2. Install the dependencies:
-   ```
-   npm install
-   ```
+## 数据格式
 
-3. Ensure you have TypeScript installed globally:
-   ```
-   npm install -g typescript
-   ```
+数据保存在 `data/ssq.json` 文件中，每条记录包含以下字段：
 
-## Usage
-
-To run the application and fetch the lottery data, use the following command:
-```
-npm start
+```json
+{
+  "issueNumber": "2023001",  // 期号
+  "redBalls": [1, 7, 9, 16, 18, 29],  // 红球号码
+  "blueBall": 7,  // 蓝球号码
+  "drawDate": "2023-01-01"  // 开奖日期
+}
 ```
 
-This will execute the TypeScript application, which will fetch the latest lottery data, merge it with existing records, and save it to `ssq.csv`.
+## 如何使用
 
-## Project Structure
+### 直接使用数据
+
+您可以直接引用GitHub上的原始数据文件：
 
 ```
-lottery-data-fetcher
-├── src
-│   ├── index.ts          # Entry point of the application
-│   ├── fetcher.ts        # Fetches lottery data from the web
-│   ├── parser.ts         # Parses the fetched data
-│   ├── storage.ts        # Handles reading and writing CSV files
-│   ├── validator.ts      # Validates and corrects data
-│   ├── types
-│   │   └── index.ts      # TypeScript interfaces for lottery data
-│   └── utils
-│       └── helpers.ts    # Utility functions
-├── .github
-│   └── workflows
-│       └── daily-update.yml # GitHub Action for daily updates
-├── package.json           # NPM configuration
-├── tsconfig.json          # TypeScript configuration
-├── .gitignore             # Files to ignore in Git
-├── ssq.csv                # Output file for lottery data
-└── README.md              # Project documentation
+https://raw.githubusercontent.com/gudaoxuri/lottery_history/main/data/ssq.json
 ```
 
-## GitHub Actions
+### 本地运行
 
-The project includes a GitHub Action workflow located in `.github/workflows/daily-update.yml` that runs daily. This workflow sets up the environment, installs dependencies, runs the TypeScript application, and commits the updated `ssq.csv` file back to the repository.
+1. 克隆此仓库：
 
-## Contributing
+```bash
+git clone https://github.com/gudaoxuri/lottery_history.git
+cd lottery_history
+```
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+2. 安装依赖：
 
-## License
+```bash
+pnpm install
+```
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+3. 运行数据更新程序：
+
+```bash
+pnpm start
+```
+
+## 开发相关
+
+### 技术栈
+
+- TypeScript
+- Node.js
+- axios (用于HTTP请求)
+- cheerio (用于HTML解析)
+
+### 目录结构
+
+```
+lottery_history/
+├── data/             # 存放生成的数据文件
+│   └── ssq.json      # 双色球历史数据
+├── src/              # 源代码目录
+│   ├── index.ts      # 入口文件
+│   ├── ssq.ts        # 双色球数据抓取逻辑
+│   ├── types/        # 类型定义
+│   │   └── record.ts # 数据记录类型定义
+│   └── utils/        # 工具函数
+├── package.json      # 项目配置
+└── tsconfig.json     # TypeScript配置
+```
+
+### 贡献代码
+
+1. Fork 这个仓库
+2. 创建您的特性分支：`git checkout -b my-new-feature`
+3. 提交您的更改：`git commit -am 'Add some feature'`
+4. 推送到分支：`git push origin my-new-feature`
+5. 提交Pull Request
+
+## 许可证
+
+本项目采用 MIT 许可证，详情请参阅 [LICENSE](LICENSE) 文件。
+
+---
+
+数据来源: [500.com](https://datachart.500.com/ssq/history/newinc/history.php)
