@@ -1,0 +1,36 @@
+{
+  "name": "lottery-history",
+  "version": "1.0.0",
+  "description": "A lottery data fetching application that extracts lottery draw data, merges existing records, and saves it to a CSV file.",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/index.js",
+    "precommit": "npm run build"
+  },
+  "dependencies": {
+    "axios": "^1.0.0",
+    "cheerio": "^1.0.0",
+    "csv-parser": "^3.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gudaoxuri/lottery-history.git"
+  },
+  "keywords": [
+    "lottery"
+  ],
+  "author": "gudaoxuri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gudaoxuri/lottery-history/issues"
+  },
+  "homepage": "https://github.com/gudaoxuri/lottery-history#readme"
+}

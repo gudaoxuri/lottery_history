@@ -1,0 +1,42 @@
+name: Daily Lottery Data Update
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  update-lottery-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # Specify the Node.js version
+
+      - name: Install pnpm
+        run: |
+          wget -qO- https://get.pnpm.io/install.sh | sh -
+          export PNPM_HOME="$HOME/.local/share/pnpm"
+          export PATH="$PNPM_HOME:$PATH"
+          source ~/.bashrc
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run lottery data fetcher
+        run: pnpm start  # Build and run the application
+
+      - name: Commit updated data
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update lottery data with latest results" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token for authentication
