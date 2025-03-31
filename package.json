@@ -25,7 +25,8 @@
     "url": "git+https://github.com/gudaoxuri/lottery-history.git"
   },
   "keywords": [
-    "lottery"
+    "lottery",
+    "history"
   ],
   "author": "gudaoxuri",
   "license": "MIT",
