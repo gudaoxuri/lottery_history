@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "win": "tsc && node dist/tools/ssq-predictor.js"
+    "win": "tsc && node dist/tools/predictor.js"
   },
   "dependencies": {
     "axios": "^1.8.4",

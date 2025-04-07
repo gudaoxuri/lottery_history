@@ -30,7 +30,10 @@ jobs:
         run: pnpm install
 
       - name: Run lottery data fetcher
-        run: pnpm start  # Build and run the application
+        run: pnpm start 
+
+      - name: Run lottery predictor
+        run: pnpm win 
 
       - name: Commit updated data
         run: |
