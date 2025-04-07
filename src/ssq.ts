@@ -57,7 +57,7 @@ function readExistingData(): Promise<LotterySsqRecord[]> {
             return resolve([]);
         }
 
-        fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+        fs.readFile(jsonFilePath, 'utf8', (err: any, data: string) => {
             if (err) {
                 console.error('Error reading JSON:', err);
                 return reject(err);
@@ -91,7 +91,7 @@ function writeData(data: LotterySsqRecord[]): Promise<void> {
     return new Promise((resolve, reject) => {
         const jsonContent = JSON.stringify(data, null, 2);
 
-        fs.writeFile(jsonFilePath, jsonContent, 'utf8', (err) => {
+        fs.writeFile(jsonFilePath, jsonContent, 'utf8', (err: any) => {
             if (err) {
                 console.error('Error writing JSON:', err);
                 return reject(err);

@@ -5,20 +5,18 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc && node dist/index.js",
-    "precommit": "npm run build"
+    "start": "tsc && node dist/index.js"
   },
   "dependencies": {
-    "axios": "^1.0.0",
+    "axios": "^1.8.4",
     "cheerio": "^1.0.0",
-    "csv-parser": "^3.0.0"
+    "csv-parser": "^3.2.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.0.0",
-    "eslint": "^9.0.0",
-    "typescript": "^5.0.0",
-    "@types/node": "^22.0.0"
+    "@antfu/eslint-config": "^4.11.0",
+    "@types/node": "^22.14.0",
+    "eslint": "^9.24.0",
+    "typescript": "^5.8.3"
   },
   "repository": {
     "type": "git",
