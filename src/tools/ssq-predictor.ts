@@ -1,7 +1,10 @@
 import fs from 'fs';
+import path from 'path';
 import { LotterySsqRecord } from '../types/record';
 
 const SSQ_DATA_PATH = './data/ssq.json';
+const PREDICT_DIR = './data/predict';
+const PREDICT_FILE = path.join(PREDICT_DIR, 'ssq.txt');
 
 interface NumberFrequency {
     number: number;
@@ -84,6 +87,24 @@ function printNumberFrequency(frequencies: NumberFrequency[], title: string) {
     console.log('--------------------');
 }
 
+function writePredictions(predictions: Array<{red: number[], blue: number}>): void {
+    // 创建预测结果目录（如果不存在）
+    if (!fs.existsSync(PREDICT_DIR)) {
+        fs.mkdirSync(PREDICT_DIR, { recursive: true });
+    }
+
+    const currentTime = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+    let content = `预测时间：${currentTime}\n`;
+    
+    predictions.forEach((pred, index) => {
+        content += `第${index + 1}组：${pred.red.join(' ')} | ${pred.blue}\n`;
+    });
+    content += '\n';
+
+    // 追加写入文件
+    fs.appendFileSync(PREDICT_FILE, content, 'utf8');
+}
+
 export function predictSsq(): void {
     try {
         // 1. Load data
@@ -106,8 +127,11 @@ export function predictSsq(): void {
 
         // 6. Generate predictions using full frequency information
         const predictions = generatePredictions(redBallFrequency, blueBallFrequency);
-
-        // 7. Output predictions
+        
+        // 7. Write predictions to file
+        writePredictions(predictions);
+        
+        // 8. Output predictions to console
         console.log('\n双色球号码预测：');
         console.log('====================');
         predictions.forEach((pred, index) => {
