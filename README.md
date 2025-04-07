@@ -13,6 +13,7 @@ _NOTE: 本项目主体代码由AI生成，人工修正及复核。_
 - 支持按期号排序
 - 数据以JSON格式存储，方便其他应用程序使用
 - 使用GitHub Actions实现自动每日更新
+- 基于历史数据的预测功能
 
 ## 数据格式
 
@@ -41,6 +42,15 @@ _NOTE: 本项目主体代码由AI生成，人工修正及复核。_
   "drawDate": "2023-01-01"  // 开奖日期
 }
 ```
+
+## 预测数据（beta）
+
+程序会基于历史数据分析生成预测结果，保存在 `data/predict/` 目录下：
+
+- `data/predict/ssq.txt` : 双色球预测数据
+- `data/predict/dlt.txt` : 大乐透预测数据
+
+每次预测会生成6组号码，每组号码基于历史数据频率分析和智能权重算法生成。预测结果包含时间戳，便于追踪预测效果。
 
 ## 如何使用
 
@@ -90,18 +100,28 @@ pnpm start
 
 ```
 lottery_history/
-├── data/             # 存放生成的数据文件
-│   ├── ssq.json      # 双色球历史数据
-│   └── dlt.json      # 大乐透历史数据
-├── src/              # 源代码目录
-│   ├── index.ts      # 入口文件
-│   ├── ssq.ts        # 双色球数据抓取逻辑
-│   ├── dlt.ts        # 大乐透数据抓取逻辑
-│   ├── types/        # 类型定义
-│   │   └── record.ts # 数据记录类型定义
-│   └── utils/        # 工具函数
-├── package.json      # 项目配置
-└── tsconfig.json     # TypeScript配置
+├── data/                       # 存放生成的数据文件
+│   ├── ssq.json                # 双色球历史数据
+│   ├── dlt.json                # 大乐透历史数据
+│   └── predict/                # 预测结果数据
+│       ├── ssq.txt             # 双色球预测数据
+│       └── dlt.txt             # 大乐透预测数据
+├── src/                        # 源代码目录
+│   ├── index.ts                # 入口文件
+│   ├── ssq.ts                  # 双色球数据抓取逻辑
+│   ├── dlt.ts                  # 大乐透数据抓取逻辑
+│   ├── types/                  # 类型定义
+│   │   └── record.ts           # 数据记录类型定义
+│   ├── utils/                  # 工具函数
+│   │   ├── base-lottery.ts     # 基础彩票类
+│   │   ├── base-predictor.ts   # 基础预测类
+│   │   └── helpers.ts          # 辅助函数
+│   └── tools/                  # 工具类
+│       ├── predictor.ts        # 预测入口
+│       ├── dlt-predictor.ts    # 大乐透预测实现
+│       └── ssq-predictor.ts    # 双色球预测实现
+├── package.json                # 项目配置
+└── tsconfig.json               # TypeScript配置
 ```
 
 ### 贡献代码
