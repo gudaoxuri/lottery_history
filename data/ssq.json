@@ -1,5 +1,44 @@
 [
   {
+    "issueNumber": "25037",
+    "redBalls": [
+      3,
+      6,
+      11,
+      20,
+      21,
+      31
+    ],
+    "blueBall": 2,
+    "drawDate": "2025-04-06"
+  },
+  {
+    "issueNumber": "25036",
+    "redBalls": [
+      5,
+      11,
+      13,
+      16,
+      19,
+      32
+    ],
+    "blueBall": 7,
+    "drawDate": "2025-04-03"
+  },
+  {
+    "issueNumber": "25035",
+    "redBalls": [
+      1,
+      8,
+      16,
+      18,
+      25,
+      31
+    ],
+    "blueBall": 1,
+    "drawDate": "2025-04-01"
+  },
+  {
     "issueNumber": "25034",
     "redBalls": [
       5,

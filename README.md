@@ -1,20 +1,22 @@
-# 双色球历史数据收集器 (Lottery History)
+# 彩票历史数据收集器 (Lottery History)
 
 [![Daily Update](https://github.com/gudaoxuri/lottery_history/actions/workflows/daily-update.yml/badge.svg)](https://github.com/gudaoxuri/lottery_history/actions/workflows/daily-update.yml)
 
 _NOTE: 本项目主体代码由AI生成，人工修正及复核。_
 
-这个项目用于自动抓取和维护中国福利彩票双色球的历史开奖数据。数据每天自动更新，保持最新状态。
+这个项目用于自动抓取和维护中国福利彩票双色球和体育彩票超级大乐透的历史开奖数据。数据每天自动更新，保持最新状态。
 
 ## 项目特点
 
-- 自动从官方网站抓取双色球开奖数据
+- 自动从官方网站抓取双色球和大乐透开奖数据
 - 智能合并新旧数据，避免重复记录
 - 支持按期号排序
 - 数据以JSON格式存储，方便其他应用程序使用
 - 使用GitHub Actions实现自动每日更新
 
 ## 数据格式
+
+### 双色球数据
 
 数据保存在 `data/ssq.json` 文件中，每条记录包含以下字段：
 
@@ -27,6 +29,19 @@ _NOTE: 本项目主体代码由AI生成，人工修正及复核。_
 }
 ```
 
+### 大乐透数据
+
+数据保存在 `data/dlt.json` 文件中，每条记录包含以下字段：
+
+```json
+{
+  "issueNumber": "2023001",  // 期号
+  "frontBalls": [1, 7, 9, 16, 18],  // 前区号码
+  "backBalls": [7, 12],  // 后区号码
+  "drawDate": "2023-01-01"  // 开奖日期
+}
+```
+
 ## 如何使用
 
 ### 直接使用数据
@@ -34,7 +49,11 @@ _NOTE: 本项目主体代码由AI生成，人工修正及复核。_
 您可以直接引用GitHub上的原始数据文件：
 
 ```
+双色球数据：
 https://raw.githubusercontent.com/gudaoxuri/lottery_history/main/data/ssq.json
+
+大乐透数据：
+https://raw.githubusercontent.com/gudaoxuri/lottery_history/main/data/dlt.json
 ```
 
 ### 本地运行
@@ -72,10 +91,12 @@ pnpm start
 ```
 lottery_history/
 ├── data/             # 存放生成的数据文件
-│   └── ssq.json      # 双色球历史数据
+│   ├── ssq.json      # 双色球历史数据
+│   └── dlt.json      # 大乐透历史数据
 ├── src/              # 源代码目录
 │   ├── index.ts      # 入口文件
 │   ├── ssq.ts        # 双色球数据抓取逻辑
+│   ├── dlt.ts        # 大乐透数据抓取逻辑
 │   ├── types/        # 类型定义
 │   │   └── record.ts # 数据记录类型定义
 │   └── utils/        # 工具函数
@@ -97,4 +118,6 @@ lottery_history/
 
 ---
 
-数据来源: [500.com](https://datachart.500.com/ssq/history/newinc/history.php)
+数据来源: 
+- 双色球: [500.com](https://datachart.500.com/ssq/history/newinc/history.php)
+- 大乐透: [500.com](https://datachart.500.com/dlt/history/newinc/history.php)

@@ -4,3 +4,10 @@ export interface LotterySsqRecord {
     blueBall: number;
     drawDate: string;
 }
+
+export interface LotteryDltRecord {
+    issueNumber: string;
+    frontBalls: number[];
+    backBalls: number[];
+    drawDate: string;
+}
