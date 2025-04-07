@@ -22,39 +22,63 @@ function getNumberFrequency(numbers: number[]): NumberFrequency[] {
     numbers.forEach(num => {
         frequency.set(num, (frequency.get(num) || 0) + 1);
     });
-    
+
     return Array.from(frequency.entries())
         .map(([number, freq]) => ({ number, frequency: freq }))
         .sort((a, b) => b.frequency - a.frequency);
 }
 
-function generatePredictions(topRedBalls: number[], topBlueBalls: number[]): Array<{red: number[], blue: number}> {
-    const predictions: Array<{red: number[], blue: number}> = [];
-    
+function weightedRandom(numbers: NumberFrequency[]): number {
+    const totalWeight = numbers.reduce((sum, item) => sum + item.frequency, 0);
+    let random = Math.random() * totalWeight * 2;
+
+    for (const item of numbers) {
+        random -= item.frequency;
+        if (random <= 0) {
+            return item.number;
+        }
+    }
+    return numbers[0].number; // 防止浮点数精度问题
+}
+
+function generatePredictions(redBallsFreq: NumberFrequency[], blueBallsFreq: NumberFrequency[]): Array<{ red: number[], blue: number }> {
+    const predictions: Array<{ red: number[], blue: number }> = [];
+
     // Generate 6 different combinations
     for (let i = 0; i < 6; i++) {
-        // Randomly select 6 different numbers from topRedBalls
-        const selectedRed = [...topRedBalls]
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 6)
-            .sort((a, b) => a - b);
-            
-        // Randomly select 1 number from topBlueBalls
-        const selectedBlue = topBlueBalls[Math.floor(Math.random() * topBlueBalls.length)];
-        
+        const selectedRed: number[] = [];
+        const availableRedBalls = [...redBallsFreq];
+
+        // 选择6个红球
+        while (selectedRed.length < 6) {
+            const selected = weightedRandom(availableRedBalls);
+            if (!selectedRed.includes(selected)) {
+                selectedRed.push(selected);
+                // 更新可用球的权重，降低已选中数字相邻数字的权重
+                availableRedBalls.forEach(ball => {
+                    if (Math.abs(ball.number - selected) <= 2) {
+                        ball.frequency = Math.max(1, ball.frequency * 0.8); // 降低相邻数字的权重但保持最小值
+                    }
+                });
+            }
+        }
+
+        // 选择1个蓝球（使用权重随机）
+        const selectedBlue = weightedRandom(blueBallsFreq);
+
         predictions.push({
-            red: selectedRed,
+            red: selectedRed.sort((a, b) => a - b),
             blue: selectedBlue
         });
     }
-    
+
     return predictions;
 }
 
 function printNumberFrequency(frequencies: NumberFrequency[], title: string) {
     console.log(`\n${title}：`);
     console.log('====================');
-    frequencies.forEach(({number, frequency}) => {
+    frequencies.forEach(({ number, frequency }) => {
         console.log(`号码 ${number.toString().padStart(2, '0')}: 出现 ${frequency} 次`);
     });
     console.log('--------------------');
@@ -64,27 +88,25 @@ export function predictSsq(): void {
     try {
         // 1. Load data
         const allRecords = loadSsqData();
-        
+
         // 2. Exclude recent 10 draws
         const historicalRecords = getHistoricalData(allRecords);
-        
-        // 3. Get frequency of blue balls and find top 3
+
+        // 3. Get frequency of blue balls
         const allBlueBalls = historicalRecords.map(record => record.blueBall);
         const blueBallFrequency = getNumberFrequency(allBlueBalls);
-        const topBlueBalls = blueBallFrequency.slice(0, 3).map(f => f.number);
-        
-        // 4. Get frequency of red balls and find top 10
+
+        // 4. Get frequency of red balls
         const allRedBalls = historicalRecords.flatMap(record => record.redBalls);
         const redBallFrequency = getNumberFrequency(allRedBalls);
-        const topRedBalls = redBallFrequency.slice(0, 10).map(f => f.number);
 
         // 5. Print frequency statistics
         printNumberFrequency(redBallFrequency, '红球出现频率统计');
         printNumberFrequency(blueBallFrequency, '蓝球出现频率统计');
-        
-        // 6. Generate predictions
-        const predictions = generatePredictions(topRedBalls, topBlueBalls);
-        
+
+        // 6. Generate predictions using full frequency information
+        const predictions = generatePredictions(redBallFrequency, blueBallFrequency);
+
         // 7. Output predictions
         console.log('\n双色球号码预测：');
         console.log('====================');
@@ -94,7 +116,7 @@ export function predictSsq(): void {
             console.log(`蓝球：${pred.blue}`);
             console.log('--------------------');
         });
-        
+
     } catch (error) {
         console.error('预测过程中出现错误：', error);
     }
