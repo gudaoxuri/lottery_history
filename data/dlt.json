@@ -1,5 +1,20 @@
 [
   {
+    "issueNumber": "25064",
+    "frontBalls": [
+      5,
+      10,
+      18,
+      20,
+      34
+    ],
+    "backBalls": [
+      1,
+      8
+    ],
+    "drawDate": ""
+  },
+  {
     "issueNumber": "25063",
     "frontBalls": [
       5,
