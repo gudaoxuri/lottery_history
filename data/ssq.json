@@ -1,5 +1,18 @@
 [
   {
+    "issueNumber": "25133",
+    "redBalls": [
+      5,
+      14,
+      17,
+      19,
+      20,
+      33
+    ],
+    "blueBall": 7,
+    "drawDate": "2025-11-18"
+  },
+  {
     "issueNumber": "25132",
     "redBalls": [
       4,
