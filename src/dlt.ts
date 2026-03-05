@@ -17,7 +17,7 @@ class DltLottery extends BaseLottery<LotteryDltRecord> {
         $('#tdata tr').each((_, element) => {
             const tds = $(element).find('td');
             const issueNumber = $(tds[0]).text().trim();
-            const drawDate = $(tds[15]).text().trim();
+            const drawDate = $(tds[14]).text().trim();
             const frontBalls = [];
             for (let i = 1; i <= 5; i++) {
                 frontBalls.push(parseInt($(tds[i]).text().trim()));
