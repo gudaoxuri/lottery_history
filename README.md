@@ -87,6 +87,12 @@ pnpm install
 pnpm start
 ```
 
+4. 运行预测程序：
+
+```bash
+pnpm win
+```
+
 ## 开发相关
 
 ### 技术栈
